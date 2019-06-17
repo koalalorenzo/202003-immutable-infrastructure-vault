@@ -3,12 +3,12 @@
 image: registry.gitlab.com/siderus/packer/toolchain:latest
 
 stages:
-  - validation
-  - deploy
-  - post-deploy
+  - renew
+  - apply
+  - post-apply
 
 vault:renew:
-  stage: post-deploy
+  stage: renew
   script:
     - vault token renew -increment=360h > /dev/null
   only:
@@ -16,13 +16,13 @@ vault:renew:
     - schedules
 
 vault:manual_renew:
-  stage: post-deploy
+  stage: post-apply
   script:
     - vault token renew -increment=360h > /dev/null
   when: manual
 
 vault:panic:
-  stage: post-deploy
+  stage: post-apply
   script:
     - make -C vault panic
   when: manual
