@@ -1,0 +1,9 @@
+{
+  "disallowed_policies": "nomad-server",
+  "allowed_policies": "aws-read,gcp-read,postgres,rabbitmq,meta-decyper-transit,secret-read,ssh-ca",
+  "explicit_max_ttl": 0,
+  "name": "nomad-cluster",
+  "orphan": false,
+  "period": 259200,
+  "renewable": true
+}

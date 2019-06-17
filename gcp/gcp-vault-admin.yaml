@@ -1,0 +1,11 @@
+title: "Vault"
+description: |
+  Role for Vault secret backend codelab to manage project IAM policy"
+stage: "GA"
+includedPermissions:
+- resourcemanager.projects.getIamPolicy
+- resourcemanager.projects.setIamPolicy
+- iam.serviceAccountKeys.delete
+- iam.serviceAccountKeys.list
+- iam.serviceAccountKeys.create
+- iam.serviceAccountKeys.get
