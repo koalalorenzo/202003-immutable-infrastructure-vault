@@ -76,6 +76,7 @@
       "Action": [
           "apigateway:GET",
           "apigateway:POST",
+          "apigateway:PATCH",
           "apigateway:PUT",
           "apigateway:DELETE",
           "cloudformation:CreateStack",
