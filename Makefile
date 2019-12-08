@@ -1,6 +1,6 @@
 VAULT_ADDR := https://vault.qm64.tech
-CLOUDFLARE_EMAIL ?= $(shell vault kv get -field=CLOUDFLARE_EMAIL secret/qm64/providers)
-CLOUDFLARE_API_TOKEN ?= $(shell vault kv get -field=CLOUDFLARE_TOKEN secret/qm64/providers)
+CLOUDFLARE_EMAIL := $(shell vault kv get -field=CLOUDFLARE_EMAIL secret/qm64/providers)
+CLOUDFLARE_API_KEY := $(shell vault kv get -field=CLOUDFLARE_TOKEN secret/qm64/providers)
 
 .EXPORT_ALL_VARIABLES:
 
@@ -10,12 +10,14 @@ TF_OPTS ?=
 _credentials:
 # Checking if No Terraform credentials are available
 ifeq (,$(wildcard ~/.terraformrc))
+	@echo "Injecting credentials"
 	@echo "credentials \"app.terraform.io\" { token = \"$(shell vault kv get -field=APP_TERRAFORM_IO secret/qm64/providers)\" }" > ~/.terraformrc
 endif
 .PHONY: _credentials
 
 clean:
 	-rm -rf .terraform
+	-rm -rf ~/.terraformrc
 .PHONY: clean
 
 # Terrafom basics

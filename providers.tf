@@ -5,14 +5,14 @@ provider "vault" {
 
 # Cloudflare provider conf
 provider "cloudflare" {
-  version = "~> 2.0"
+  version = "~> 2"
 }
 
 # provider "digitalocean" {
 #   version = "~> 1.9"
 # }
 
-provider "aws" {
-  version = "~> 2.32"
-  region  = "eu-west-1"
-}
+# provider "aws" {
+#   version = "~> 2.41"
+#   region  = "eu-west-1"
+# }

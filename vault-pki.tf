@@ -19,6 +19,11 @@ resource "vault_pki_secret_backend_role" "qm64" {
   allow_subdomains   = true
   allow_glob_domains = true
   max_ttl            = 8760 * 60 * 60
+  key_usage = [
+    "DigitalSignature",
+    "KeyAgreement",
+    "KeyEncipherment",
+  ]
 }
 
 resource "vault_pki_secret_backend_role" "siderus" {
@@ -28,4 +33,9 @@ resource "vault_pki_secret_backend_role" "siderus" {
   allow_subdomains   = true
   allow_glob_domains = true
   max_ttl            = 8760 * 60 * 60
+  key_usage = [
+    "DigitalSignature",
+    "KeyAgreement",
+    "KeyEncipherment",
+  ]
 }

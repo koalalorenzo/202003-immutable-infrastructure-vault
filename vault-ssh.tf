@@ -16,5 +16,5 @@ resource "vault_ssh_secret_backend_role" "ssh_admin" {
   default_user            = "root"
   allowed_users           = "*"
   allow_user_certificates = true
-  ttl                     = "30m0s"
+  ttl                     = 60 * 30 # 3 min
 }
