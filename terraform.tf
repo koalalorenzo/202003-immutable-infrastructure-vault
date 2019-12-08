@@ -6,7 +6,7 @@ terraform {
     organization = "Qm64"
 
     workspaces {
-      name = "main"
+      name = "vault"
     }
   }
 }
