@@ -4,3 +4,10 @@ artifacts/
 *.pem
 *.ignore.*
 *.secret*
+packer/*cache
+packer/output*
+packer/credentials.json
+*.ignore.*
+.terraform
+*.tfstate*
+*.tfvars
