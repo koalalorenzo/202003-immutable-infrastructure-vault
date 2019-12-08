@@ -1,26 +1,52 @@
-VAULT_ADDR ?= https://vault.siderus.team
+VAULT_ADDR := https://vault.qm64.tech
+CLOUDFLARE_EMAIL ?= $(shell vault kv get -field=CLOUDFLARE_EMAIL secret/qm64/providers)
+CLOUDFLARE_API_TOKEN ?= $(shell vault kv get -field=CLOUDFLARE_TOKEN secret/qm64/providers)
+
 .EXPORT_ALL_VARIABLES:
-POLICIES := $(shell ls -1 ./policies/ | sed 's/.hcl//g')
--include ./*.mk
 
-policies:
-	$(foreach var,$(POLICIES),vault policy write $(var) ./policies/$(var).hcl;)
-.PHONY: policies
+TF_OPTS ?=
 
-policy_%:
-.PHONY: policy_%
+# These phony targets are designed for automated process
+_credentials:
+# Checking if No Terraform credentials are available
+ifeq (,$(wildcard ~/.terraformrc))
+	@echo "credentials \"app.terraform.io\" { token = \"$(shell vault kv get -field=APP_TERRAFORM_IO secret/qm64/providers)\" }" > ~/.terraformrc
+endif
+.PHONY: _credentials
 
-kv:
-	# Upgrade default kv secret/ to v2
-	-vault kv enable-versioning secret/
-.PHONY: kv
+clean:
+	-rm -rf .terraform
+.PHONY: clean
 
-auth:
-	-vault auth enable github
-	# Github users should renew every 6h max life of 24h
-	vault write auth/github/config organization=siderus max_ttl=12h ttl=3h
-	vault write auth/github/map/teams/default value=developer
-.PHONY: auth
+# Terrafom basics
+_tf_init: _credentials
+ifeq (,$(wildcard ./.terraform))
+	terraform init -input=false ${TF_OPTS}
+endif
+.PHONY: _tf_init
+
+tf_validate: _tf_init
+	terraform validate
+.PHONY: tf_validate
+
+# Terraform targets
+taint_%: _tf_init
+	terraform taint ${TF_OPTS} $*
+.PHONY: tf_taint
+
+apply: _tf_init
+	terraform apply -input=false -auto-approve ${TF_OPTS}
+.PHONY: apply
+
+plan: _tf_init
+	terraform plan -input=false ${TF_OPTS}
+.PHONY: plan
+
+.DEFAULT_GOAL :=
+
+################################################################################
+# Shortcuts
+################################################################################
 
 recover_root:
 	# Generating a new root token, please revoke it when you are done.
@@ -48,15 +74,41 @@ seal:
 
 panic:
 	vault operator rotate
-	$(MAKE) psql_rorate trasit_rotate
 	sleep 5
 	$(MAKE) seal
 .PHONY: panic
 
-setup: kv auth policies transit ssh pki pki_roles
-.PHONY: setup
+token_pipeline:
+	# Create a pipeline token capable of reading atlas secrets, that has 1w as life
+	# time and can be renewed for a max of 4 weeks. It is orphan so that when
+	# revokign the root token this will not be revoked too.
+	#
+	vault token create \
+		-orphan -display-name="pipeline" \
+	 	-policy=pipeline \
+		-period=168h -explicit-max-ttl=4464h -ttl=168h
+.PHONY: token_pipeline
 
-ansible_prepare: letsencrypt_download update_internal_pki_ca token_ansible ssh_client
-.PHONY: ansible_prepare
+token_admin:
+	# Add admin token capable of running as root. This will help revoking root
+	# token to increase security. Use this token with caution. It will expire
+	# in 7 days and can be renewed for a max of 1 month. This token should
+	# be used just for set up and monitoring during the next month.
+	#
+	vault token create -orphan -policy=root -period=168h \
+		-explicit-max-ttl=744h -ttl=168h
+	@echo "--- Press Enter when ready to revoke the root token ---"
+	@read
+	#
+	# Since we have a new temporary root token, we can revoke the previous one
+	# Please login with the new token once done.
+	#
+	vault token revoke -self
+.PHONY: token_admin
 
-.ALL: setup
+token_quick_admin:
+	# Add admin token capable of running as root.
+	# This is a short living key that can't survive more than 3h (default 5m).
+	# Use this for things like browser or quick tests.
+	vault token create -policy=root -period=15m -explicit-max-ttl=3h -ttl=5m
+.PHONY: token_quick_admin
