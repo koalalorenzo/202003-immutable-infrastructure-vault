@@ -32,3 +32,10 @@ resource "vault_aws_secret_backend_role" "role_reader" {
   credential_type = "iam_user"
   policy_arns     = ["arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"]
 }
+
+resource "vault_aws_secret_backend_role" "s3" {
+  backend         = vault_aws_secret_backend.aws.path
+  name            = "s3"
+  credential_type = "iam_user"
+  policy_arns     = ["arn:aws:iam::aws:policy/AmazonS3FullAccess"]
+}

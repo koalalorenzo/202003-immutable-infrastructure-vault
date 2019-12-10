@@ -38,3 +38,26 @@ make token_admin
 
 This will create a new orphan root token, with 7 days to live and that can be
 renewed. It will also revoke the previous root token.
+
+
+## Terraform Setup
+To run terraform plans on this repository you need a manual configuration.
+Create a file called `terraform.tfvars` and inject the AWS credentials for 
+Vault's user (hopefully not admin but capable of performing operations to 
+generate tokens with abilities to do stuff).
+
+The content should look similar to this:
+
+```
+aws_access_key = "[...]"
+aws_secret_key = "[...]"
+```
+
+Then validates that everything is correct by running: 
+
+```
+make plan
+```
+
+Note that this project is not automated as it is intended for initial setups 
+and permissions granting.
