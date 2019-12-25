@@ -3,7 +3,6 @@
 image: registry.gitlab.com/qm64/packer/toolchain:latest
 
 stages:
-  - renew
   - validate
   - apply
   - post-apply
@@ -14,7 +13,7 @@ terraform:validate:
     - make tf_validate # plan is not possible due to manual work required.
 
 vault:renew:
-  stage: renew
+  stage: validate
   script:
     - vault token renew -increment=360h > /dev/null
   only:
