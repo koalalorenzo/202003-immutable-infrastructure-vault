@@ -54,7 +54,7 @@ recover_root:
 	# Generating a new root token, please revoke it when you are done.
 	# Later run `vault operator generate-root` for each sealing key"
 	# The key will be base64 encoded and secured for keybase:koalalorenzo"
-	-vault operator generate-root -init -pgp-key=keybase:koalalorenzo
+	-vault operator generate-root -init
 	# Once done, please log in and use `make token_admin` to generate a proper
 	# token. This will increase security level. Remember to revoke.
 	#
@@ -64,7 +64,6 @@ recover_root:
 start_unseal_rekey:
 	# Generate a new set of keys. This will invalidate the previous unseal keys
 	vault operator rekey -init \
-		-pgp-keys=keybase:koalalorenzo,keybase:koalalorenzo,keybase:koalalorenzo \
 		-key-shares=3 -key-threshold=2 -backup
 	# Now you can run `vault operator rekey`
 	# The keys will be base64 encoded and secured for keybase:koalalorenzo"
