@@ -53,5 +53,11 @@ path "sys/seal"
 {
   capabilities = ["read", "update", "sudo"]
 }
+
+# Ability to get SSH CA
+path "ssh/config/ca"
+{
+  capabilities = ["read", "list"]
+}
 EOT
 }
