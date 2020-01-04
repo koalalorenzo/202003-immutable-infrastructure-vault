@@ -20,6 +20,10 @@ clean:
 	-rm -rf ~/.terraformrc
 .PHONY: clean
 
+ssh_client:
+	vault write -field=signed_key ssh/sign/admin public_key=@${HOME}/.ssh/id_rsa.pub > ${HOME}/.ssh/id_rsa-cert.pub
+.PHONY: ssh_client
+
 # Terrafom basics
 _tf_init: _credentials
 ifeq (,$(wildcard ./.terraform))
