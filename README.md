@@ -44,13 +44,16 @@ renewed. It will also revoke the previous root token.
 To run terraform plans on this repository you need a manual configuration.
 Create a file called `terraform.tfvars` and inject the AWS credentials for 
 Vault's user (hopefully not admin but capable of performing operations to 
-generate tokens with abilities to do stuff).
+generate tokens with abilities to do stuff), as well as the Nomad bootstrap 
+ACL token and address.
 
 The content should look similar to this:
 
 ```
 aws_access_key = "[...]"
 aws_secret_key = "[...]"
+nomad_token = "[...]"
+nomad_addr = "https://nomad.qm64.tech:4646"
 ```
 
 Then validates that everything is correct by running: 
