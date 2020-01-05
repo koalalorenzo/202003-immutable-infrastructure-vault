@@ -5,13 +5,13 @@ variable "nomad_token" {}
 resource "vault_mount" "nomad" {
   path                      = "nomad"
   type                      = "nomad"
-  default_lease_ttl_seconds = 24 * 60 * 60 # ~ a day
+  default_lease_ttl_seconds = 24 * 60 * 60      # ~ a day
   max_lease_ttl_seconds     = 31 * 24 * 60 * 60 # ~ a month
 }
 
 resource "vault_generic_secret" "nomad_config" {
   depends_on = [vault_mount.nomad]
-  path = "nomad/config/lease"
+  path       = "nomad/config/lease"
 
   data_json = <<EOT
 {
@@ -23,7 +23,7 @@ EOT
 
 resource "vault_generic_secret" "nomad_access" {
   depends_on = [vault_generic_secret.nomad_config]
-  path = "nomad/config/access"
+  path       = "nomad/config/access"
 
   data_json = <<EOT
 {
@@ -35,7 +35,7 @@ EOT
 
 resource "vault_generic_secret" "nomad_policy_monitoring" {
   depends_on = [vault_generic_secret.nomad_access]
-  path = "nomad/role/monitoring"
+  path       = "nomad/role/monitoring"
 
   data_json = <<EOT
 {
@@ -47,7 +47,7 @@ EOT
 
 resource "vault_generic_secret" "nomad_policy_admin" {
   depends_on = [vault_generic_secret.nomad_access]
-  path = "nomad/role/admin"
+  path       = "nomad/role/admin"
 
   data_json = <<EOT
 {
