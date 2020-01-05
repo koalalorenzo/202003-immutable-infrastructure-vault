@@ -29,6 +29,10 @@ path "secret/data/*" {
   capabilities = ["read", "list"]
 }
 
+path "transit/encrypt/*" {
+  capabilities = ["create", "update", "read"]
+}
+
 path "transit/decrypt/*" {
   capabilities = ["create", "update", "read"]
 }
