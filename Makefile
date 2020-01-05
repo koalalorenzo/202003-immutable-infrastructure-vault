@@ -1,6 +1,6 @@
 VAULT_ADDR := https://vault.qm64.tech
-CLOUDFLARE_EMAIL := $(shell vault kv get -field=CLOUDFLARE_EMAIL secret/qm64/providers)
-CLOUDFLARE_API_KEY := $(shell vault kv get -field=CLOUDFLARE_TOKEN secret/qm64/providers)
+CLOUDFLARE_EMAIL ?= $(shell vault kv get -field=CLOUDFLARE_EMAIL secret/qm64/providers)
+CLOUDFLARE_API_KEY ?= $(shell vault kv get -field=CLOUDFLARE_TOKEN secret/qm64/providers)
 
 .EXPORT_ALL_VARIABLES:
 
