@@ -20,10 +20,6 @@ clean:
 	-rm -rf ~/.terraformrc
 .PHONY: clean
 
-ssh_client:
-	vault write -field=signed_key ssh/sign/admin public_key=@${HOME}/.ssh/id_rsa.pub > ${HOME}/.ssh/id_rsa-cert.pub
-.PHONY: ssh_client
-
 # Terrafom basics
 _tf_init: _credentials
 ifeq (,$(wildcard ./.terraform))
@@ -117,3 +113,7 @@ token_quick_admin:
 	# Use this for things like browser or quick tests.
 	vault token create -policy=root -period=15m -explicit-max-ttl=3h -ttl=5m
 .PHONY: token_quick_admin
+
+ssh_client:
+	vault write -field=signed_key ssh/sign/admin public_key=@${HOME}/.ssh/id_rsa.pub > ${HOME}/.ssh/id_rsa-cert.pub
+.PHONY: ssh_client
