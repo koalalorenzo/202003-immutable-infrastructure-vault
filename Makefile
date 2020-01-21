@@ -53,12 +53,12 @@ plan: _tf_init
 recover_root:
 	# Generating a new root token, please revoke it when you are done.
 	# Later run `vault operator generate-root` for each sealing key"
-	# The key will be base64 encoded and secured for keybase:koalalorenzo"
 	-vault operator generate-root -init
 	# Once done, please log in and use `make token_admin` to generate a proper
 	# token. This will increase security level. Remember to revoke.
 	#
-	# Now you can run `vault operator generate-root`
+	# Now you can run `vault operator generate-root` and later you should use
+	# vault operator generate-root -decode=XYZ -otp=XYZ
 .PHONY: recover_root
 
 start_unseal_rekey:
