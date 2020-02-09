@@ -14,7 +14,7 @@ resource "cloudflare_record" "qm64_tech_vault" {
   zone_id = lookup(data.cloudflare_zones.qm64_tech.zones[0], "id")
   name    = "vault"
   type    = "A"
-  value   = "116.203.249.221" # Manual
+  value   = "49.12.7.169" # Manual
 
   ttl     = "1"
   proxied = true
