@@ -1,0 +1,53 @@
+{
+  "variables": {
+    "VAULT_VERSION": "{{env `VAULT_VERSION`}}"
+  },
+  "provisioners": [
+    {
+      "pause_before": "60s",
+      "type": "shell",
+      "inline": [
+        "sudo apt-get update",
+        "sudo apt-get install --yes -q python python-apt"
+      ]
+    },
+    {
+    "pause_before": "5s",
+    "type": "ansible",
+    "playbook_file": "playbook.yaml",
+    "groups": ["vault"],
+    "extra_arguments": [
+      "--extra-vars", "vault_version={{ user `VAULT_VERSION` }}"
+    ],
+    "override": {
+      "amazon-ebs": {
+        "user": "ubuntu"
+      }
+    }
+  }],
+  "builders": [
+    {
+      "type": "hcloud",
+      "image": "ubuntu-18.04",
+      "location": "nbg1",
+      "server_type": "cx11",
+      "ssh_username": "root",
+      "snapshot_name": "vault-{{timestamp}}"
+    },
+    {
+      "type": "amazon-ebs",
+      "ami_name": "vault-{{timestamp}}",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "ubuntu/images/*ubuntu-bionic-18.04-amd64-server-*",
+          "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "instance_type": "t2.nano",
+      "ssh_username": "ubuntu"
+    }
+  ]
+}

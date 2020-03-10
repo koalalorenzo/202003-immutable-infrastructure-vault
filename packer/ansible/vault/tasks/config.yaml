@@ -1,0 +1,40 @@
+- name: Create Vault directory for configuration
+  file:
+    path: /etc/vault
+    state: directory
+    mode: 0750
+    owner: vault
+    group: vault
+
+- name: Create Vault Audit file
+  file:
+    path: /var/log/vault_audit.log
+    state: touch
+    mode: 0744
+    owner: vault
+    group: vault
+
+- name: Copy the configuration
+  copy:
+    src: ../conf/
+    dest: /etc/vault
+    mode: 0640
+    owner: vault
+    group: vault
+    directory_mode: yes
+
+- name: Ensure Vault data directory exists
+  file:
+    path: /var/vault
+    state: directory
+    mode: 750
+    owner: vault
+    group: vault
+
+- name: Ensure vault conf directory
+  file:
+    path: /etc/vault/tls/
+    state: directory
+    mode: 750
+    owner: vault
+    group: vault

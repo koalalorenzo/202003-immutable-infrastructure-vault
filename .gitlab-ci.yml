@@ -7,10 +7,25 @@ stages:
   - apply
   - post-apply
 
-terraform:validate:
+all:validate:
   stage: validate
   script:
-    - make tf_validate # plan is not possible due to manual work required.
+    - make -C packer validate
+    - make -C configuration validate
+    - make -C infrastructure validate
+
+infrastructure:apply:
+  stage: apply
+  script:
+    - make -C infrastructure apply
+  only:
+    - master 
+
+packer:build:
+  stage: apply 
+  script:
+    - make -C packer build
+  when: manual
 
 vault:renew:
   stage: validate

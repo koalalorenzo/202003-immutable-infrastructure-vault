@@ -1,0 +1,44 @@
+---
+  - name: Secure SSH 
+    hosts: all 
+    become: yes
+    become_user: root
+    become_method: sudo
+  
+    handlers:
+      - name: Restart ssh
+        service: name=ssh state=restarted
+  
+    tasks:
+      - name: Set Max users to 2
+        lineinfile:
+          path: /etc/ssh/sshd_config
+          regexp: '^MaxSessions'
+          line: 'MaxSessions 2'
+          state: present
+          mode: 0644
+        notify: Restart ssh
+  
+      - name: Set interval for alive check to every 20 seconds
+        lineinfile:
+          path: /etc/ssh/sshd_config
+          regexp: '^ClientAliveInterval'
+          line: 'ClientAliveInterval 20'
+          state: present
+          mode: 0644
+        notify: Restart ssh
+  
+      - name: If Alive check failed for 3 consecutive times, drop the connection (1min)
+        lineinfile:
+          path: /etc/ssh/sshd_config
+          regexp: '^ClientAliveCountMax'
+          line: 'ClientAliveCountMax 3'
+          state: present
+          mode: 0644
+        notify: Restart ssh
+  
+      - name: Configure SSH on UFW
+        ufw:
+          rule: allow
+          port: 22
+  

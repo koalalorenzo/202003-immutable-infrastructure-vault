@@ -1,0 +1,29 @@
+---
+  - name: Install software and upgrade dependencies
+    hosts: all
+    become: yes
+    become_user: root
+    become_method: sudo
+    gather_facts: no
+    
+    tasks:
+      - name: Update packager chache
+        apt:
+          update_cache: yes
+  
+      - name: Upgrade packages
+        apt:
+          upgrade: yes
+  
+      - name: "Install other packages"
+        apt:
+          name: "{{ packages }}"
+          state: present
+        vars:
+          packages:
+            - ca-certificates
+            - apt-transport-https
+            - openssl
+            - curl
+            - unzip
+            - mosh
