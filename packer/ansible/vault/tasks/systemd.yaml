@@ -1,0 +1,33 @@
+- name: Create the service
+  blockinfile:
+    path: /etc/systemd/system/vault.service
+    create: yes
+    mode: 0644
+    block: |
+      [Unit]
+      Description=Vault
+      Documentation=https://www.vault.io/
+
+      [Service]
+      ExecStart=/usr/bin/vault server -config=/etc/vault/config.hcl
+      ExecReload=/bin/kill -HUP $MAINPID
+      User=vault
+      LimitNOFILE=65536
+      LimitMEMLOCK=infinity
+      AmbientCapabilities=CAP_NET_BIND_SERVICE
+      Environment=GOOGLE_APPLICATION_CREDENTIALS=/etc/vault/gcp.vault.secret.json
+      Restart=always
+      RestartSec=15
+
+      [Install]
+      WantedBy=multi-user.target
+      
+- name: Force systemd to reread confing
+  systemd:
+    daemon_reload: yes
+
+- name: (Re-)starts and enables Vault
+  service:
+    name: vault
+    state: restarted
+    enabled: yes

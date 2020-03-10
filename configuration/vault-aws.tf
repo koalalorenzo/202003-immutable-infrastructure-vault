@@ -5,6 +5,7 @@ variable "aws_secret_key" {}
 resource "vault_aws_secret_backend" "aws" {
   access_key                = var.aws_access_key
   secret_key                = var.aws_secret_key
+  region     = "eu-west-1"
   default_lease_ttl_seconds = 5 * 60  # 5 min
   max_lease_ttl_seconds     = 60 * 60 # 1h
 }

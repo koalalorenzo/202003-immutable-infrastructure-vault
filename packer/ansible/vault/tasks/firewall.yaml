@@ -1,0 +1,9 @@
+- name: Configure HTTPS Firewall
+  ufw:
+    rule: allow
+    port: 443
+
+- name: Configure HTTPS:443 Firewall for vault HA
+  ufw:
+    rule: allow
+    port: 444

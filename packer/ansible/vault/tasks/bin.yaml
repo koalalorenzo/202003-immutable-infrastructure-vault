@@ -1,0 +1,17 @@
+- name: Creates a temporary directory for Hashicorp Vault
+  tempfile:
+    state: directory
+    suffix: build
+  register: temp
+
+- name: Install Hashicorp Vault {{ vault_version }}
+  shell: |
+    curl https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip -O && \
+    unzip -o -d /usr/bin vault_{{ vault_version }}_linux_amd64.zip && \
+    rm vault_{{ vault_version }}_linux_amd64.zip
+  args:
+    chdir: "{{ temp.path }}"
+
+
+
+

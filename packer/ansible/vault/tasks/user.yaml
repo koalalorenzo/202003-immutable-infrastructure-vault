@@ -1,0 +1,14 @@
+- name: Adds Vault group
+  group:
+    name: vault
+    system: true
+    state: present
+
+- name: Adds Vault user
+  user:
+    name: vault
+    group: vault
+    append: true
+    create_home: false
+    system: true
+    state: present

@@ -1,0 +1,13 @@
+---
+- name: Deploys Hashicorp Vault Server
+  hosts: vault
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  tasks:
+    - include: tasks/user.yaml
+    - include: tasks/bin.yaml
+    - include: tasks/config.yaml
+    - include: tasks/firewall.yaml
+    - include: tasks/systemd.yaml

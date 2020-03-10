@@ -1,0 +1,51 @@
+---
+  - name: Setup Firewall and fail2ban
+    hosts: all
+    become: yes
+    become_user: root
+    become_method: sudo
+    gather_facts: no
+  
+    tasks:
+      - name: "Install UFW packages"
+        apt:
+          name: ufw
+          state: present
+  
+      - name: Configure SSH on UFW
+        ufw:
+          rule: allow
+          port: 22
+  
+      - name: Enable UFW
+        ufw:
+          state: enabled
+          policy: deny
+          direction: incoming
+  
+      - name: "Install fail2ban packages"
+        apt:
+          name: fail2ban
+          state: present
+  
+      - name: Create SSH Jailtime
+        blockinfile:
+          path: /etc/fail2ban/jail.local
+          create: yes
+          mode: 0644
+          block: |
+            [sshd]
+            enabled = true
+            banaction = iptables-multiport
+            maxretry = 10
+            findtime = 43200
+            bantime = 86400
+  
+      - name: DROP jailed packets
+        blockinfile:
+          path: /etc/fail2ban/action.d/iptables-common.local
+          create: yes
+          mode: 0644
+          block: |
+            [Init]
+            blocktype = DROP
