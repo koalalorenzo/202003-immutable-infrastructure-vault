@@ -1,11 +1,15 @@
-# Hashicorp Vault setup
+# Hashicorp Vault setup with AWS S3, EC2 and Immutable Infrastructure
 
-This repository contains [Hashicorp Vault](https://vaultproject.io)
-configuration. This is partially automated via Terraform due to the chicken-egg
-nature. This set of makefiles are designed to be run with a non-initialized or
-brand new Vault instance. Anyway, please proceede with caution,
-**READ THE README FILE** as this is intended as an example, but it is in use
-by [Qm64](https://qm64.tech).
+This repository contains [Hashicorp Vault](https://vaultproject.io) 
+configuration and immutable infrastucture setup. 
+This is partially automated via Terraform and GitLab pipeline due to the 
+chicken-egg nature and security reasons. It uses some immutable 
+infrastucture concept to deplouy a safer and updated Hashicorp Vault setup 
+without manual operations.
+
+
+**READ THE README FILE** as this is content intended as an example, 
+but it is in use by [Qm64](https://qm64.tech). 
 
 ## Packer Setup
 Please read more in [the related README file](./packer/README.md)
