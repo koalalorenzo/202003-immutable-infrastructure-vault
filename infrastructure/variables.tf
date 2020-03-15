@@ -9,5 +9,5 @@ variable "vault_domain" {
 
 
 variable "vault_instance_type" {
-  default = "t2.nano"  
+  default = "t2.micro"  # Free elegible 
 }
