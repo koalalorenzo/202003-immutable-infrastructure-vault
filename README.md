@@ -12,7 +12,7 @@ this blog post: [Exploring Immutalbe Infrastructure on Vault](https://qm64.tech/
 changes in order to be used!
 
 **READ THE README FILE** as this is content is both an example and it is live 
-and used by [Qm64](https://qm64.tech) project's. Please check 
+and used by [Qm64](https://qm64.tech) project's. Please check the original 
 [GitLab repository](https://gitlab.com/qm64/vault) for the latest updates.
 
 ## Before we start: About Credentials 
