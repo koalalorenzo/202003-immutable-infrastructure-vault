@@ -2,26 +2,25 @@
 
 This repository contains [Hashicorp Vault](https://vaultproject.io) 
 configuration and immutable infrastucture setup. 
+
 This is partially automated via Terraform and GitLab pipeline due to the 
 chicken-egg nature and security reasons. It uses some immutable 
 infrastucture concept to deplouy a safer and updated Hashicorp Vault setup 
 without manual operations.
 
-Note that part of this repository's description is showcased in
-this blog post: [Exploring Immutalbe Infrastructure on Vault](https://qm64.tech/posts/202003-immutable-infrastructure-vault/). **This is an example** and it requires 
-changes in order to be used!
-
-**READ THE README FILE** as this is content is both an example and it is live 
-and used by [Qm64](https://qm64.tech) project's. Please check the original 
+**Note**: most of this repository's is an example used in
+this blog post: [Exploring Immutalbe Infrastructure on Vault](https://qm64.tech/posts/202003-immutable-infrastructure-vault/). Outside of [Qm64](https://qm64.tech) 
+this should be  considered as an example and it requires changes in order to 
+be used! **READ THE README FILES** and please check the original 
 [GitLab repository](https://gitlab.com/qm64/vault) for the latest updates.
 
 ## Before we start: About Credentials 
-**This repo uses Make** to ensure that the env variables and credentials are set 
-correctly. Why?
+**This repo uses GNU Make a lote** to ensure that the env variables and 
+credentials are set correctly. Why?
 
 Because if there is no Vault deployed yet, we need a manual way to deploy it!
 After that Gitlab CI/CD pipeline is capable to obtain the credentials from 
-Vautl itself. To acheive this we are using Make. Check the `Makefiles` to know
+Vautl itself. To acheive this we are using Make. Check the `Makefile`s to know
 more. 😅
 
 For the first deploy please make sure that your environment has the following 
@@ -38,15 +37,16 @@ is only used by Terraform to expose Vault.
 `VAULT_ADDR` configured correctly in your env 😜
 
 ## Packer Setup
-Please read more in [the related README file](./packer/README.md)
+Please read more in [the related README file](./packer/README.md) and 
+the source code under `./packer`. Some comments might help you.
 
 In order to keep secure and updated the Vault machine, every now and then
-(usually monthly), the VM hosting vault gets recycled and replaced with a new 
-one. To acheive this we use Packer, so that we can test and validate VM Images 
+(usually monthly), the VM currently running gets recycled and replaced with a 
+new  one. To do this we use Packer, so that we can test and validate VM Images 
 before upgrading to a new version.
 
-The packer builds uses Ansible to setup a basic firewall, SSH connection limits,
-process upgrades as well as installing Hashicorp Vault and service.
+Packer uses Ansible to setup a basic firewall, SSH connection limits,
+packages upgrades as well as installing Hashicorp Vault and services.
 
 To build the new image run:
 
@@ -56,6 +56,11 @@ make -C packer validate build
 
 ## Deploy Vault in EC2
 Please read more in [the related README file](./infrastructure/README.md)
+
+This setup is configured to support multiple environments (multiple domains too)
+but it has designed around qm64 needs. Vault is exposed to the whole public 
+network to allow Gitlab to access it via an expiring token. This is a middle
+ground between safety and ease of access and it is not suggested for production!
 
 You can validate and plan the changes to AWS before applying:
 
@@ -69,8 +74,9 @@ You can then apply the changes by running:
 make -C infrastructure apply
 ```
 
-For a full understanding and more details please check 
-[infrastructure README file](./infrastructure/README.md)
+For more details please check 
+[infrastructure README file](./infrastructure/README.md) and the source code
+under `./infrastructure`
 
 ## Post deploy Setup
 Please read more in [the related README file](./configuration/README.md)
