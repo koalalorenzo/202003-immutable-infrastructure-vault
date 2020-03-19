@@ -4,7 +4,7 @@
 # This allows the instance to access the s3 bucket
 ###
 
-# Prepare the cloud init 
+# Prepare Vautl configuration file with teh AWS S3 bucket details
 data "template_file" "vault_conf" {
   template = "${file("${path.module}/templates/vault-config.hcl.tpl")}"
   vars = {
@@ -14,6 +14,7 @@ data "template_file" "vault_conf" {
   }
 }
 
+# Inject Vault confgiuration file into the cloud-init file. :-)
 data "template_file" "cloud_init" {
   template = "${file("${path.module}/templates/cloud-init.tpl")}"
   vars = {

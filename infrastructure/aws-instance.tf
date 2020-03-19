@@ -19,6 +19,7 @@ resource "aws_instance" "vault" {
 
   user_data_base64 = data.template_cloudinit_config.config.rendered
 
+  # This is important to reduce downtime as much as possible
   lifecycle {
     create_before_destroy = true
   }
