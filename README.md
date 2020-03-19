@@ -7,9 +7,22 @@ chicken-egg nature and security reasons. It uses some immutable
 infrastucture concept to deplouy a safer and updated Hashicorp Vault setup 
 without manual operations.
 
+Note that part of this repository's description is showcased in
+this blog post: [Exploring Immutalbe Infrastructure on Vault](https://qm64.tech/posts/202003-immutable-infrastructure-vault/)
 
-**READ THE README FILE** as this is content intended as an example, 
-but it is in use by [Qm64](https://qm64.tech). 
+**READ THE README FILE** as this is content is both an example and it is live 
+and used by [Qm64](https://qm64.tech) project's. Please check 
+[GitLab repository](https://gitlab.com/qm64/vault) for the latest updates.
+
+## Before we start: Credentials 
+Please make sure that your environment has the following  variables set up:
+
+- `CLOUDFLARE_API_TOKEN`: you can [generate a token here](https://dash.cloudflare.com/profile/api-tokens).
+- `AWS_ACCESS_KEY_ID`: You can generate this from AWS Console
+- `AWS_SECRET_ACCESS_KEY`
+
+AWS credentials are required by both Terraform and Packer, while Cloudlfare
+is only used by Terraform to expose Vault.
 
 ## Packer Setup
 Please read more in [the related README file](./packer/README.md)
@@ -22,8 +35,7 @@ before upgrading to a new version.
 The packer builds uses Ansible to setup a basic firewall, SSH connection limits,
 process upgrades as well as installing Hashicorp Vault and service.
 
-To build it, please make sure that your AWS credentials are configured properly
-using `aws configure`, then you can procede by running:
+To build the new image run:
 
 ```shell
 make -C packer validate build
@@ -31,9 +43,6 @@ make -C packer validate build
 
 ## Deploy Vault in EC2
 Please read more in [the related README file](./infrastructure/README.md)
-
-Assuming that the `aws` cli has been configured you should be able to deploy the
-AMI just created into a new EC2 instance. 
 
 You can validate and plan the changes to AWS before applying:
 
