@@ -8,14 +8,24 @@ infrastucture concept to deplouy a safer and updated Hashicorp Vault setup
 without manual operations.
 
 Note that part of this repository's description is showcased in
-this blog post: [Exploring Immutalbe Infrastructure on Vault](https://qm64.tech/posts/202003-immutable-infrastructure-vault/)
+this blog post: [Exploring Immutalbe Infrastructure on Vault](https://qm64.tech/posts/202003-immutable-infrastructure-vault/). **This is an example** and it requires 
+changes in order to be used!
 
 **READ THE README FILE** as this is content is both an example and it is live 
 and used by [Qm64](https://qm64.tech) project's. Please check 
 [GitLab repository](https://gitlab.com/qm64/vault) for the latest updates.
 
-## Before we start: Credentials 
-Please make sure that your environment has the following  variables set up:
+## Before we start: About Credentials 
+**This repo uses Make** to ensure that the env variables and credentials are set 
+correctly. Why?
+
+Because if there is no Vault deployed yet, we need a manual way to deploy it!
+After that Gitlab CI/CD pipeline is capable to obtain the credentials from 
+Vautl itself. To acheive this we are using Make. Check the `Makefiles` to know
+more. 😅
+
+For the first deploy please make sure that your environment has the following 
+variables set up:
 
 - `CLOUDFLARE_API_TOKEN`: you can [generate a token here](https://dash.cloudflare.com/profile/api-tokens).
 - `AWS_ACCESS_KEY_ID`: You can generate this from AWS Console
@@ -24,12 +34,15 @@ Please make sure that your environment has the following  variables set up:
 AWS credentials are required by both Terraform and Packer, while Cloudlfare
 is only used by Terraform to expose Vault.
 
+**After Vault is configured** all you need is to have `VAULT_TOKEN` and 
+`VAULT_ADDR` configured correctly in your env 😜
+
 ## Packer Setup
 Please read more in [the related README file](./packer/README.md)
 
 In order to keep secure and updated the Vault machine, every now and then
-(monthly), the VM hosting vault gets recycled and replaced with a new one.
-To acheive this we use Packer, so that we can test and validate VM Images 
+(usually monthly), the VM hosting vault gets recycled and replaced with a new 
+one. To acheive this we use Packer, so that we can test and validate VM Images 
 before upgrading to a new version.
 
 The packer builds uses Ansible to setup a basic firewall, SSH connection limits,
