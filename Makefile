@@ -1,3 +1,5 @@
+PGP_KEYS_INIT ?= keybase:koalalorenzo,keybase:koalalorenzo,keybase:kolalorenzo
+
 ################################################################################
 # Shortcuts
 ################################################################################
@@ -5,18 +7,17 @@
 recover_root:
 	# Generating a new root token, please revoke it when you are done.
 	# Later run `vault operator generate-root` for each sealing key"
-	-vault operator generate-root -init
+	-vault operator generate-root -init -pgp-keys="${PGP_KEYS_INIT}"
 	# Once done, please log in and use `make token_admin` to generate a proper
 	# token. This will increase security level. Remember to revoke.
-	#
-	# Now you can run `vault operator generate-root` and later you should use
-	# vault operator generate-root -decode=XYZ -otp=XYZ
+	# Secrets are encrypted with keybase's gpg 
 .PHONY: recover_root
 
 start_unseal_rekey:
 	# Generate a new set of keys. This will invalidate the previous unseal keys
 	vault operator rekey -init \
-		-key-shares=3 -key-threshold=2 -backup
+		-key-shares=3 -key-threshold=2 -backup \
+		-pgp-keys="${PGP_KEYS_INIT}"
 	# Now you can run `vault operator rekey`
 	# The keys will be base64 encoded and secured for keybase:koalalorenzo"
 .PHONY: start_rekey
@@ -25,10 +26,12 @@ seal:
 	vault operator seal
 .PHONY: seal
 
-panic:
+rotate:
 	vault operator rotate
-	sleep 5
-	$(MAKE) seal
+	-sleep 1
+.PHONY: rotate 
+
+panic: rotate seal
 .PHONY: panic
 
 token_pipeline:
@@ -67,5 +70,6 @@ token_quick_admin:
 .PHONY: token_quick_admin
 
 ssh_client:
+	# Gain access to SSH by signing your own SSH id_rsa key.
 	vault write -field=signed_key ssh/sign/admin public_key=@${HOME}/.ssh/id_rsa.pub > ${HOME}/.ssh/id_rsa-cert.pub
 .PHONY: ssh_client
