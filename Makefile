@@ -37,7 +37,7 @@ panic: rotate seal
 token_pipeline:
 	# Create a pipeline token capable of reading atlas secrets, that has 1w as life
 	# time and can be renewed for a max of 4 weeks. It is orphan so that when
-	# revokign the root token this will not be revoked too.
+	# revoking the root token this will not be revoked too.
 	#
 	vault token create \
 		-orphan -display-name="pipeline" \

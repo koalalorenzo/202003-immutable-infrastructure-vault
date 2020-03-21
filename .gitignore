@@ -11,3 +11,4 @@ packer/credentials.json
 .terraform
 *.tfstate*
 *.tfvars
+.vscode

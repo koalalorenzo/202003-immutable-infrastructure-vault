@@ -1,6 +1,6 @@
 # This security group is exposing HTTPS to Cloudflare. 
 # This is just an example, and is relying on Cloudflare's being a trustable 
-# source as all the secrets will pass throug their endpoint! (but hey, no VPN!)
+# source as all the secrets will pass through their endpoint! (but hey, no VPN!)
 resource "aws_security_group" "cloudflare-http" {
   name_prefix = "cloudflare-http-"
   description = "Allow HTTP/s only to CloudFlare"

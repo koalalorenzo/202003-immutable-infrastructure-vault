@@ -16,7 +16,7 @@ resource "cloudflare_record" "qm64_tech_vault" {
   value   = aws_instance.vault.public_ip 
 
   # By proxying it we do not expose the IP but we also ensure that the IP
-  # changes are propagated "faster" than DNS cache. Be carefull with the TTL if
+  # changes are propagated "faster" than DNS cache. Be careful with the TTL if
   # proxy is disabled. :-)
   ttl     = "1"
   proxied = true

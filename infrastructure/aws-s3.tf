@@ -1,4 +1,4 @@
-# Cereate a S3 bucket that will be used by vault.
+# Create a S3 bucket that will be used by vault.
 # Note that the name is random so that we can test it on multiple environments
 # for multiple versions. Note also the prevent destroy to reduce the risk of
 # data loss in case we accidentally run `terraform destroy` ;-)

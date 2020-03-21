@@ -3,16 +3,16 @@ Hey surfer! This repository has been updated on 2020/03/21, so some
 sections might be outdated if you are reading this from the future! 😉
 
 This repository contains [Hashicorp Vault](https://vaultproject.io) 
-configuration and immutable infrastucture setup. 
+configuration and immutable infrastructure setup. 
 
 It is automated via Terraform and [GitLab](https://gitlab.com/qm64/vault) 
 pipeline but it requires an initial setup that is manual. It uses some immutable 
-infrastucture concept to deploy a AWS EC2 instance on Hashicorp Vault  
+infrastructure concept to deploy a AWS EC2 instance on Hashicorp Vault  
 without manual operations. It can be easily modified to use other cloud vendors 
 as the setup is cloud agnostic.
 
 **Important Note**: most of this repository's is an example used in
-this blog post: [Exploring Immutalbe Infrastructure on Vault](https://qm64.tech/posts/202003-immutable-infrastructure-vault/) for [Qm64](https://qm64.tech). 
+this blog post: [Exploring Immutable Infrastructure on Vault](https://qm64.tech/posts/202003-immutable-infrastructure-vault/) for [Qm64](https://qm64.tech). 
 this should be  considered as an example and it requires changes in order to 
 be used! **READ THE README FILES** and please check the original 
 [GitLab repository](https://gitlab.com/qm64/vault) for the latest updates.
@@ -22,8 +22,8 @@ be used! **READ THE README FILES** and please check the original
 credentials are set correctly. _Why?_
 
 Because if there is no Vault deployed yet, we need a manual way to deploy it!
-After that Gitlab CI/CD pipeline is capable to obtain temporary credentials from 
-Vautl itself. To acheive this we are using Make. Check the `Makefile`s to know
+After that GitLab CI/CD pipeline is capable to obtain temporary credentials from 
+Vault itself. To achieve this we are using Make. Check the `Makefile`s to know
 more. 😅
 
 For the first deploy please make sure that your environment has the following 
@@ -90,7 +90,7 @@ under `./infrastructure`
 Please read more in [the related README file](./configuration/README.md)
 This is not part of the immutable infrastructure but about configuring Vault.
 
-After vault has been deployed it [needs to be initalized](https://learn.hashicorp.com/vault/getting-started/deploy#initializing-the-vault). 
+After vault has been deployed it [needs to be initialized](https://learn.hashicorp.com/vault/getting-started/deploy#initializing-the-vault). 
 This is a manual operation: Set up `VAULT_ADDR` env variable to your domain and run:
 
 ```shell
@@ -140,7 +140,7 @@ First we initiate the process:
 make recover_root
 ```
 
-Then we ask the people holding the vault unsealink keys to run
+Then we ask the people holding the vault unsealing keys to run
 `vault operator generate-root` and to follow the instructions on screen.
 This is not required if we are using a cloud provided KMS solution.
 
