@@ -3,11 +3,12 @@ variable "vault_ami" {
 }
 
 variable "vault_domain" {
-  description = "The domain to use"
+  description = "The domain to use (ex test-vault.qm64.tech)"
   default = "vault.qm64.tech"
 }
 
 
 variable "vault_instance_type" {
-  default = "t2.micro"  # Free elegible 
+  description = "AWS instance type"
+  default = "t2.micro"  # Free elegible?
 }
